@@ -1,15 +1,15 @@
-/* Replace with your SQL commands */
+/* Create Tables */
 CREATE TABLE products (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(50) NOT NULL,
+    name VARCHAR(100) NOT NULL,
     price INTEGER NOT NULL,
-    category VARCHAR(50)
+    category VARCHAR(100)
 );
 
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
-    firstName VARCHAR(50) NOT NULL,
-    lastName VARCHAR(50) NOT NULL,
+    firstName VARCHAR(100) NOT NULL,
+    lastName VARCHAR(100) NOT NULL,
     password VARCHAR(100) NOT NULL
 );
 
@@ -20,3 +20,7 @@ CREATE TABLE orders (
     user_id INTEGER REFERENCES users(id),
     product_id INTEGER REFERENCES products(id)
 );
+
+-- Insert section --
+
+INSERT INTO products(name, price, category) VALUES ('Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops', 100, 'clothing'); 
