@@ -1,11 +1,26 @@
 import connectionDB from '../database';
 
+interface Product {
+    id: number;
+    name: string;
+    price: number;
+    category?: number;
+}
+
 class ProductModel {
-    async index() {
+    async index(): Promise<Product[]> {
         try {
-            await connectionDB.connect();
             const results = await connectionDB.query('SELECT * FROM products');
-            connectionDB.end();
+            return results.rows;
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    async show(id: string): Promise<Product[]> {
+        try {
+            const sql = 'SELECT * FROM products WHERE "id" = $1';
+            const results = await connectionDB.query(sql, [id]);
             return results.rows;
         } catch (err) {
             throw err;

@@ -24,3 +24,5 @@ CREATE TABLE orders (
 -- Insert section --
 
 INSERT INTO products(name, price, category) VALUES ('Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops', 100, 'clothing'); 
+INSERT INTO products(name, price, category) VALUES ('Casual Premium Slim Fit T-Shirts', 22.3, 'clothing'); 
+

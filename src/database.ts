@@ -17,6 +17,9 @@ const connectionDB = new pg.Pool({
     database,
     user: POSTGRES_USER,
     password: POSTGRES_PASSWORD,
+    max: 50,
+    connectionTimeoutMillis: 10000,
+    idleTimeoutMillis: 10000,
 });
 
 export default connectionDB;
