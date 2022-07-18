@@ -38,12 +38,13 @@ Show route: '/login' [POST]
 #### Products routes
 
 Index route: '/products' [GET]
-Show route: '/products:/id' [GET]
+Show route: '/products/:id' [GET]
+Create route: '/products/create' [GET][token required]
 
 #### Users routes
 
 Index route: '/users' [GET][token required]
-Show route: '/users:/id' [GET][token required]
+Show route: '/users/:id' [GET][token required]
 Create route: '/users/create' [POST][token required]
 
 -   Design the Postgres database tables based off the data shape requirements. Add to the requirements document the database tables and columns being sure to mark foreign keys.  

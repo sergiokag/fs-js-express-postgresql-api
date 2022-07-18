@@ -1,4 +1,4 @@
-import productModel from './model';
+import productModel, { Product } from './model';
 
 describe('ProductModel:>', () => {
     describe('index route:>', () => {
@@ -24,6 +24,21 @@ describe('ProductModel:>', () => {
                 expect(err).toBeTruthy();
                 done();
             });
+        });
+    });
+
+    describe('create route:>', () => {
+        it('should add a new product', async () => {
+            const product: Product = {
+                name: 'Test product',
+                price: 0,
+            };
+
+            await productModel.create(product);
+            const result = await productModel.index();
+            expect(result[result.length - 1].name).toContain('Test ');
+            expect(result[result.length - 1].price).toBe(0);
+            expect(result[result.length - 1].category).toBeNull();
         });
     });
 });
