@@ -30,8 +30,21 @@ Your first task is to read the requirements and update the document with the fol
 
 HTTP methods supported
 
+#### App routes
+
+Index route: '/sign-up' [POST]
+Show route: '/login' [POST]
+
+#### Products routes
+
 Index route: '/products' [GET]
 Show route: '/products:/id' [GET]
+
+#### Users routes
+
+Index route: '/users' [GET][token required]
+Show route: '/users:/id' [GET][token required]
+Create route: '/users/create' [POST][token required]
 
 -   Design the Postgres database tables based off the data shape requirements. Add to the requirements document the database tables and columns being sure to mark foreign keys.  
     **Example**: You can format this however you like but these types of information should be provided

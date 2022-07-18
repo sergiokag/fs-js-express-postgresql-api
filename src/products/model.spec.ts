@@ -1,15 +1,6 @@
-import connectionDB from '../database';
-import productModel from './models';
+import productModel from './model';
 
 describe('ProductModel:>', () => {
-    beforeAll(() => {
-        connectionDB.connect();
-    });
-
-    afterAll(() => {
-        connectionDB.end();
-    });
-
     describe('index route:>', () => {
         it('should have index method', () => {
             expect(productModel.index).toBeDefined();
