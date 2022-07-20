@@ -47,9 +47,18 @@ Index route: '/users' [GET][token required]
 Show route: '/users/:id' [GET][token required]
 Create route: '/users/create' [POST][token required]
 
+#### Orders routes
+
+Show route: '/orders/user/:id' [GET][token required]
+Add product route: '/orders/add-product' [POST][token required]
+
 -   Design the Postgres database tables based off the data shape requirements. Add to the requirements document the database tables and columns being sure to mark foreign keys.  
     **Example**: You can format this however you like but these types of information should be provided
-    Table: Books (id:varchar, title:varchar, author:varchar, published_year:varchar, publisher_id:string[foreign key to publishers table], pages:number)
+    Table: users (id:serial primary key, firstname:varchar(100) not null, lastname:varchar(100) not null, username:varchar(100) not null, password:varchar(100) not null)
+
+    Table: products (id:serial primary key, name:varchar(100) not null, price:integer not null, category:varchar(100))
+
+    Table: orders_users_products (id:serial primary key, quantity:integer not null, status: in 'active' and 'complete', user_id:integer[foreign key to users table], product_id:integer[foreign key to products table])
 
 **NOTE** It is important to remember that there might not be a one to one ratio between data shapes and database tables. Data shapes only outline the structure of objects being passed between frontend and API, the database may need multiple tables to store a single shape.
 

@@ -21,13 +21,17 @@ router.post('/sign-up', async (req, res) => {
     try {
         const cryptedPassword = hashPassword(password);
 
+        const isUserNameTaken = await userModel.isUserNameTaken(userName);
+        if (isUserNameTaken) {
+            return res.status(400).json('Username already exists');
+        }
+
         const user: User = {
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             userName: req.body.userName,
             password: cryptedPassword,
         };
-
         const newUser = await userModel.create(user);
         const token = jwt.sign(
             { user: newUser },
