@@ -6,6 +6,7 @@
   "scripts": {
     "db-migration": "db-migrate down && db-migrate up",
     "start": "npm run db-migration && ts-node src/server.ts",
+    "build": "npm run db-migration && tsc -p . && node ./dist/server.js",
     "watch": "npm run db-migration && tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess \"node ./dist/server.js\"",
     "test": "set ENV=test&& db-migrate --env test down && db-migrate --env test up && jasmine-ts \"src/**/*.spec.ts\"",
     "tsc": "tsc",
