@@ -1,5 +1,6 @@
 import express from 'express';
 import verifyAuthToken from '../common/middlewares/verifyAuthToken';
+import { TypedRequestBody } from '../common/utils/interfaces';
 import productModel, { Product } from './model';
 
 const router = express.Router();
@@ -22,35 +23,48 @@ router.get('/:id', async (req, res) => {
     res.status(200).send(data);
 });
 
-router.post('/create', verifyAuthToken, async (req, res) => {
-    const { name, price, category } = req.body;
+router.post(
+    '/create',
+    verifyAuthToken,
+    async (
+        req: TypedRequestBody<{
+            name: string;
+            price: number;
+            category?: string;
+        }>,
+        res
+    ) => {
+        const { name, price, category } = req.body;
 
-    if (!name || price === '') {
-        res.status(400).send(
-            'You must provide product name and price! Category is not mandatory!'
-        );
-        return;
-    }
-
-    if (isNaN(+price)) {
-        return res.status(400).send('You must provide a numeric price value!');
-    }
-
-    try {
-        const product: Product = {
-            name,
-            price,
-            category,
-        };
-
-        const newProduct = await productModel.create(product);
-        if (newProduct) {
-            res.json({ message: 'New product created successfully!' });
+        if (!name || price === 0) {
+            res.status(400).send(
+                'You must provide a valid product name and a valid price(greater than zero)!  Category is not mandatory!'
+            );
+            return;
         }
-    } catch (err) {
-        res.status(400);
-        res.json(err);
+
+        if (isNaN(+price)) {
+            return res
+                .status(400)
+                .send('You must provide a numeric price value!');
+        }
+
+        try {
+            const product: Product = {
+                name,
+                price,
+                category,
+            };
+
+            const newProduct = await productModel.create(product);
+            if (newProduct) {
+                res.json({ message: 'New product created successfully!' });
+            }
+        } catch (err) {
+            res.status(400);
+            res.json(err);
+        }
     }
-});
+);
 
 export default router;

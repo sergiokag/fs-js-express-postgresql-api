@@ -2,8 +2,9 @@ import express from 'express';
 import dotenv from 'dotenv';
 
 import userModel, { User } from './model';
-import verifyAuthToken from '../common/middlewares/verifyAuthToken';
 import { hashPassword } from '../common';
+import verifyAuthToken from '../common/middlewares/verifyAuthToken';
+import { TypedRequestBody } from '../common/utils/interfaces';
 
 dotenv.config({ path: `.env` });
 const router = express.Router();
@@ -26,34 +27,51 @@ router.get('/:id', verifyAuthToken, async (req, res) => {
     res.status(200).send(data);
 });
 
-router.post('/create', verifyAuthToken, async (req, res) => {
-    const { firstName, lastName, userName, password } = req.body;
+router.post(
+    '/create',
+    verifyAuthToken,
+    async (
+        req: TypedRequestBody<{
+            firstName: string;
+            lastName: string;
+            userName: string;
+            password: string;
+        }>,
+        res
+    ) => {
+        const { firstName, lastName, userName, password } = req.body;
 
-    if (!firstName || !lastName || !userName || !password) {
-        res.status(400).send(
-            'You must provide first name, last name, username and password!'
-        );
-        return;
-    }
-
-    try {
-        const cryptedPassword = hashPassword(password);
-
-        const user: User = {
-            firstName: req.body.firstName,
-            lastName: req.body.lastName,
-            userName: req.body.userName,
-            password: cryptedPassword,
-        };
-
-        const newUser = await userModel.create(user);
-        if (newUser) {
-            res.json({ message: 'User created successfully!' });
+        if (!firstName || !lastName || !userName || !password) {
+            res.status(400).send(
+                'You must provide first name, last name, username and password!'
+            );
+            return;
         }
-    } catch (err) {
-        res.status(400);
-        res.json(err);
+
+        const isUserNameTaken = await userModel.isUserNameTaken(userName);
+        if (isUserNameTaken) {
+            return res.status(400).json('Username already exists');
+        }
+
+        try {
+            const cryptedPassword = hashPassword(password);
+
+            const user: User = {
+                firstName: req.body.firstName,
+                lastName: req.body.lastName,
+                userName: req.body.userName,
+                password: cryptedPassword,
+            };
+
+            const newUser = await userModel.create(user);
+            if (newUser) {
+                res.json({ message: 'User created successfully!' });
+            }
+        } catch (err) {
+            res.status(400);
+            res.json(err);
+        }
     }
-});
+);
 
 export default router;
