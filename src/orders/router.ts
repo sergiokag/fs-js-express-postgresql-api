@@ -11,8 +11,13 @@ dotenv.config({ path: `.env` });
 const router = express.Router();
 
 router.get('/user/:userId', verifyAuthToken, async (req, res) => {
-    const data = await orderModel.show(req.params.userId);
-    res.status(200).send(data);
+    const data = await orderModel.showCurrentOrder(req.params.userId);
+    if (data) {
+        return res.status(200).send(data);
+    }
+    return res.status(200).send({
+        message: 'No current orders where found!',
+    });
 });
 
 router.post(

@@ -14,11 +14,17 @@ CREATE TABLE users (
     password VARCHAR(100) NOT NULL
 );
 
-CREATE TABLE orders_users_products (
+CREATE TABLE orders (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id),
+    status VARCHAR(10) CHECK (status in ('active', 'complete'))
+);
+
+
+CREATE TABLE orders_products (
     id SERIAL PRIMARY KEY,
     quantity INTEGER NOT NULL,
-    status VARCHAR(10) CHECK (status in ('active', 'complete')),
-    user_id INTEGER REFERENCES users(id),
+    order_id INTEGER REFERENCES orders(id),
     product_id INTEGER REFERENCES products(id)
 );
 

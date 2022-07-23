@@ -1,42 +1,39 @@
-# API Requirements
-The company stakeholders want to create an online storefront to showcase their great product ideas. Users need to be able to browse an index of all products, see the specifics of a single product, and add products to an order that they can view in a cart page. You have been tasked with building the API that will support this application, and your coworker is building the frontend.
+## Restful Routes and HTTP verbs
 
-These are the notes from a meeting with the frontend developer that describe what endpoints the API needs to supply, as well as data shapes the frontend and backend have agreed meet the requirements of the application. 
+HTTP methods supported
 
-## API Endpoints
-#### Products
-- Index 
-- Show
-- Create [token required]
-- [OPTIONAL] Top 5 most popular products 
-- [OPTIONAL] Products by category (args: product category)
+#### App routes
 
-#### Users
-- Index [token required]
-- Show [token required]
-- Create N[token required]
+Index route: '/sign-up' [POST]
+Show route: '/login' [POST]
 
-#### Orders
-- Current Order by user (args: user id)[token required]
-- [OPTIONAL] Completed Orders by user (args: user id)[token required]
+#### Products routes
 
-## Data Shapes
-#### Product
--  id
-- name
-- price
-- [OPTIONAL] category
+Index route: '/products' [GET]
+Show route: '/products/:id' [GET]
+Create route: '/products/create' [GET][token required]
 
-#### User
-- id
-- firstName
-- lastName
-- password
+#### Users routes
 
-#### Orders
-- id
-- id of each product in the order
-- quantity of each product in the order
-- user_id
-- status of order (active or complete)
+Index route: '/users' [GET][token required]
+Show route: '/users/:id' [GET][token required]
+Create route: '/users/create' [POST][token required]
 
+#### Orders routes
+
+Show route: '/orders/user/:id' [GET][token required]
+Add product route: '/orders/add-product' [POST][token required]
+
+## Database Tables
+
+    Table: users (id:serial primary key, firstname:varchar(100) not null, lastname:varchar(100) not null, username:varchar(100) not null, password:varchar(100) not null)
+
+    Table: products (id:serial primary key, name:varchar(100) not null, price:integer not null, category:varchar(100))
+
+    Table: orders_users_products (id:serial primary key, quantity:integer not null, status: in 'active' and 'complete', user_id:integer[foreign key to users table], product_id:integer[foreign key to products table])
+
+### Sign up & Login
+
+Visit the `/sign-up` route if you want to create a user and get a token.
+The token expires after 5 minutes. If your token has expired and you wish to visit routes
+that are restricted visit route `/login`.

@@ -1,4 +1,5 @@
 import express from 'express';
+import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 
 import userModel, { User } from './model';
@@ -29,7 +30,6 @@ router.get('/:id', verifyAuthToken, async (req, res) => {
 
 router.post(
     '/create',
-    verifyAuthToken,
     async (
         req: TypedRequestBody<{
             firstName: string;
@@ -64,9 +64,11 @@ router.post(
             };
 
             const newUser = await userModel.create(user);
-            if (newUser) {
-                res.json({ message: 'User created successfully!' });
-            }
+            const token = jwt.sign(
+                { user: newUser },
+                process.env.TOKEN_SECRET as string
+            );
+            res.json(token);
         } catch (err) {
             res.status(400);
             res.json(err);
