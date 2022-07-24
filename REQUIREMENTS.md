@@ -2,11 +2,6 @@
 
 HTTP methods supported
 
-#### App routes
-
-Index route: '/sign-up' [POST]
-Show route: '/login' [POST]
-
 #### Products routes
 
 Index route: '/products' [GET]
@@ -17,7 +12,7 @@ Create route: '/products/create' [GET][token required]
 
 Index route: '/users' [GET][token required]
 Show route: '/users/:id' [GET][token required]
-Create route: '/users/create' [POST][token required]
+Create route: '/users/create' [POST]
 
 #### Orders routes
 
@@ -30,10 +25,6 @@ Add product route: '/orders/add-product' [POST][token required]
 
     Table: products (id:serial primary key, name:varchar(100) not null, price:integer not null, category:varchar(100))
 
-    Table: orders_users_products (id:serial primary key, quantity:integer not null, status: in 'active' and 'complete', user_id:integer[foreign key to users table], product_id:integer[foreign key to products table])
+    Table: orders (id:serial primary key, status: in 'active' and 'complete', user_id:integer[foreign key to users table])
 
-### Sign up & Login
-
-Visit the `/sign-up` route if you want to create a user and get a token.
-The token expires after 5 minutes. If your token has expired and you wish to visit routes
-that are restricted visit route `/login`.
+    Table: orders_producs (id:serial primary key, quantity:integer not null - greater than zero,  order_id:integer [foreign key to orders table], product_id:integer[foreign key to products table])

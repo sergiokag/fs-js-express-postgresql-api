@@ -10,7 +10,7 @@ export interface Order {
 }
 
 class OrderModel {
-    async showCurrentOrder(id: string): Promise<Order | undefined> {
+    async showCurrentOrder(id: string): Promise<Order[]> {
         try {
             const sql = `
                  SELECT 
@@ -23,7 +23,7 @@ class OrderModel {
             const conn = await connectionDB.connect();
             const results = await connectionDB.query(sql, [id]);
             conn.release();
-            return results.rows[0];
+            return results.rows;
         } catch (err) {
             throw err;
         }
@@ -44,8 +44,6 @@ class OrderModel {
                 status,
                 userId,
             ]);
-
-            console.log(orderResults.rows[0]);
 
             const prdersProductsSql =
                 'INSERT INTO orders_products(quantity, order_id, product_id) VALUES ( $1, $2, $3 ) RETURNING *';

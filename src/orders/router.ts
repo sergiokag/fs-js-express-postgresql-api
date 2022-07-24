@@ -12,7 +12,7 @@ const router = express.Router();
 
 router.get('/user/:userId', verifyAuthToken, async (req, res) => {
     const data = await orderModel.showCurrentOrder(req.params.userId);
-    if (data) {
+    if (data.length) {
         return res.status(200).send(data);
     }
     return res.status(200).send({
@@ -28,7 +28,7 @@ router.post(
             userId: number;
             productId: number;
             quantity: number;
-            status: string;
+            status: 'active' | 'complete';
         }>,
         res
     ) => {
