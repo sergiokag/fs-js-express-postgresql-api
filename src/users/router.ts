@@ -11,8 +11,15 @@ dotenv.config({ path: `.env` });
 const router = express.Router();
 
 router.get('/', verifyAuthToken, async (_req, res) => {
-    const data = await userModel.index();
-    res.status(200).send(data);
+    try {
+        const data = await userModel.index();
+        res.status(200).send(data);
+    } catch (error) {
+        res.status(500).json({
+            error,
+            message: `Something went wrong with the server. Please try again!`,
+        });
+    }
 });
 
 router.get('/:id', verifyAuthToken, async (req, res) => {
@@ -24,8 +31,16 @@ router.get('/:id', verifyAuthToken, async (req, res) => {
         );
         return;
     }
-    const data = await userModel.show(id);
-    res.status(200).send(data);
+
+    try {
+        const data = await userModel.show(id);
+        res.status(200).send(data);
+    } catch (error) {
+        res.status(500).json({
+            error,
+            message: `Something went wrong with the server. Please try again!`,
+        });
+    }
 });
 
 router.post(
@@ -41,9 +56,18 @@ router.post(
     ) => {
         const { firstName, lastName, userName, password } = req.body;
 
-        if (!firstName || !lastName || !userName || !password) {
+        if (
+            !firstName ||
+            typeof firstName !== 'string' ||
+            !lastName ||
+            typeof lastName !== 'string' ||
+            !userName ||
+            typeof userName !== 'string' ||
+            !password ||
+            typeof password !== 'string'
+        ) {
             res.status(400).send(
-                'You must provide first name, last name, username and password!'
+                'You must provide string values first name, last name, username and password!'
             );
             return;
         }
@@ -69,9 +93,11 @@ router.post(
                 process.env.TOKEN_SECRET as string
             );
             res.json(token);
-        } catch (err) {
-            res.status(400);
-            res.json(err);
+        } catch (error) {
+            res.status(500).json({
+                error,
+                message: `Something went wrong with the server. Please try again!`,
+            });
         }
     }
 );

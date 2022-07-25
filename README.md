@@ -13,6 +13,7 @@
     - POSTGRES_USER -> [ Set your postgres user ]
     - POSTGRES_PASSWORD -> [ Set your postgres password ]
     - POSTGRES_HOST -> [ Set your postgres host ]
+    - POSTGRES_PORT -> [ Set your postgres port ]
     - BCRYPT_PEPPER -> [ Set your bcrypt pepper text ]
     - TOKEN_SECRET -> [ Set your token secret text ]
 

@@ -6,8 +6,15 @@ import productModel, { Product } from './model';
 const router = express.Router();
 
 router.get('/', async (_req, res) => {
-    const data = await productModel.index();
-    res.status(200).send(data);
+    try {
+        const data = await productModel.index();
+        res.status(200).send(data);
+    } catch (error) {
+        res.status(500).json({
+            error,
+            message: `Something went wrong with the server. Please try again!`,
+        });
+    }
 });
 
 router.get('/:id', async (req, res) => {
@@ -19,8 +26,16 @@ router.get('/:id', async (req, res) => {
         );
         return;
     }
-    const data = await productModel.show(id);
-    res.status(200).send(data);
+
+    try {
+        const data = await productModel.show(id);
+        res.status(200).send(data);
+    } catch (error) {
+        res.status(500).json({
+            error,
+            message: `Something went wrong with the server. Please try again!`,
+        });
+    }
 });
 
 router.post(
@@ -60,9 +75,11 @@ router.post(
             if (newProduct) {
                 res.json({ message: 'New product created successfully!' });
             }
-        } catch (err) {
-            res.status(400);
-            res.json(err);
+        } catch (error) {
+            res.status(500).json({
+                error,
+                message: `Something went wrong with the server. Please try again!`,
+            });
         }
     }
 );

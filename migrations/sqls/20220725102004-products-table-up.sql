@@ -1,31 +1,8 @@
-/* Create Tables */
-CREATE TABLE products (
+CREATE TABLE IF NOT EXISTS products (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     price INTEGER NOT NULL,
     category VARCHAR(100)
-);
-
-CREATE TABLE users (
-    id SERIAL PRIMARY KEY,
-    firstName VARCHAR(100) NOT NULL,
-    lastName VARCHAR(100) NOT NULL,
-    userName VARCHAR(100) NOT NULL,
-    password VARCHAR(100) NOT NULL
-);
-
-CREATE TABLE orders (
-    id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES users(id),
-    status VARCHAR(10) CHECK (status in ('active', 'complete'))
-);
-
-
-CREATE TABLE orders_products (
-    id SERIAL PRIMARY KEY,
-    quantity INTEGER NOT NULL CHECK(quantity > 0),
-    order_id INTEGER REFERENCES orders(id),
-    product_id INTEGER REFERENCES products(id)
 );
 
 -- Insert product section --

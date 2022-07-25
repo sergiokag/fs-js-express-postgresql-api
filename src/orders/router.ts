@@ -11,13 +11,21 @@ dotenv.config({ path: `.env` });
 const router = express.Router();
 
 router.get('/user/:userId', verifyAuthToken, async (req, res) => {
-    const data = await orderModel.showCurrentOrder(req.params.userId);
-    if (data.length) {
-        return res.status(200).send(data);
+    try {
+        const data = await orderModel.showCurrentOrder(req.params.userId);
+        if (data.length) {
+            return res.status(200).send(data);
+        }
+
+        return res.status(200).send({
+            message: 'No current orders where found!',
+        });
+    } catch (error) {
+        res.status(500).json({
+            error,
+            message: `Something went wrong with the server. Please try again!`,
+        });
     }
-    return res.status(200).send({
-        message: 'No current orders where found!',
-    });
 });
 
 router.post(
@@ -88,8 +96,11 @@ router.post(
                 productId
             );
             res.status(200).send(data);
-        } catch (err) {
-            throw err;
+        } catch (error) {
+            res.status(500).json({
+                error,
+                message: `Something went wrong with the server. Please try again!`,
+            });
         }
     }
 );

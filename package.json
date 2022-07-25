@@ -4,11 +4,11 @@
   "description": "",
   "main": "server.ts",
   "scripts": {
-    "db-migration": "db-migrate down && db-migrate up",
+    "db-migration": "db-migrate reset && db-migrate up",
     "start": "npm run db-migration && ts-node src/server.ts",
     "build": "npm run db-migration && tsc -p . && node ./dist/server.js",
     "watch": "npm run db-migration && tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess \"node ./dist/server.js\"",
-    "test": "set ENV=test&& db-migrate --env test down && db-migrate --env test up && jasmine-ts \"src/**/*.spec.ts\"",
+    "test": "set ENV=test&& db-migrate reset && db-migrate --env test up && jasmine-ts \"src/**/*.spec.ts\"",
     "tsc": "tsc",
     "lint": "eslint . --ext .ts",
     "prettier": "prettier --write src/**/*.ts"
@@ -31,6 +31,7 @@
     "@types/jasmine": "^3.6.3",
     "@types/jsonwebtoken": "^8.5.8",
     "@types/pg": "^7.14.7",
+    "@types/supertest": "^2.0.12",
     "@typescript-eslint/eslint-plugin": "^5.30.6",
     "@typescript-eslint/parser": "^5.30.6",
     "db-migrate": "^0.11.13",
@@ -43,6 +44,7 @@
     "jasmine-ts": "^0.3.0",
     "prettier": "^2.7.1",
     "rimraf": "^3.0.2",
+    "supertest": "^6.2.4",
     "ts-node": "^10.8.2",
     "tsc-watch": "^4.2.9",
     "typescript": "^4.7.4"
